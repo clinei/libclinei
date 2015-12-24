@@ -1,0 +1,8 @@
+/rational
+/rational.exe
+.dub
+/dub.selections.json
+docs.json
+__dummy.html
+*.o
+*.obj
