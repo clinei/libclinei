@@ -1,5 +1,7 @@
 /rational
 /rational.exe
+/__test__library__
+/librational.a
 .dub
 /dub.selections.json
 docs.json

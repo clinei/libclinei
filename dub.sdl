@@ -1,3 +1,2 @@
 name "rational"
 targetType "sourceLibrary"
-excludedSourceFiles "source/app.d"

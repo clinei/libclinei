@@ -173,6 +173,16 @@ template Rational(Type, bool autoReduce = true)
 		}
 
 		/++
+		Same as `forcePrecision`, but doesn't change the original
+		Bugs: Cannot infer type for template parameters from this
+		++/
+		Rational atPrecision(Denom = Type)(Denom denom)
+		{
+			Rational t = this;
+			return t.forcePrecision(denom);
+		}
+
+		/++
 		Reduces to the lowest possible terms
 		++/
 		ref Rational reduce()
@@ -296,7 +306,15 @@ template Rational(Type, bool autoReduce = true)
 		ref Rational opOpAssign(string op, Other)(Other other)
 		    if (!isRational!Other && isImplicitlyConvertible!(Other, Type))
 		{
-			opOpAssign!op(Rational(other));
+			static if (op == "^^") // not tested
+			{
+				num ^^= other;
+				denom ^^= other;
+			}
+			else
+			{
+				opOpAssign!op(Rational(other));
+			}
 			return this;
 		}
 
@@ -426,15 +444,14 @@ template Rational(Type, bool autoReduce = true)
 		}
 
 		Rational opBinary(string op, Other)(Other other) const
-		    if (op == "+" || op == "-" || op == "*" || op == "/")
 		{
 			Rational t = this;
 			return t.opOpAssign!op(other);
 		}
 		Rational opBinaryRight(string op, Other)(Other other) const
-		    if (op == "+" || op == "-" || op == "*" || op == "/")
 		{
-			return opBinary!op(other);
+			auto o = Rational(other);
+			return o.opBinary!op(this);
 		}
 
 		/// Converts to pretty string
@@ -468,7 +485,7 @@ Rational!ulong rational(Num)(Num num)
 {
 	return rational(num, 1);
 }
-unittest
+static unittest
 {
 	auto r1 = rational(-2, 3);
 	auto r2 = rational(4, -6);
@@ -478,6 +495,8 @@ unittest
 	assert( !(r1 < r2) );
 	assert( (r1 / r2) == 1 );
 	assert( (r1 - r2) == 0 );
+	assert( (1 - rational(1, 3)) == rational(2, 3));
+
 	import std.math : approxEqual;
 	assert( (cast(float)rational(1, -3) ).approxEqual(-0.33333));
 	assert( cast(long)rational(256, 64) == 4 );
