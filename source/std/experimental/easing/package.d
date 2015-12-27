@@ -3,7 +3,7 @@ module std.experimental.easing;
 public import std.experimental.easing.functions;
 
 import std.typetuple : allSatisfy;
-import std.experimental.rational : isRational;
+import std.experimental.math.rational : isRational;
 /++
 `Start`, `End` and `Progress` must be instantiations of `std.experimental.rational : Rational`
 ++/
