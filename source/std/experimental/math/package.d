@@ -2,7 +2,7 @@ module std.experimental.math;
 
 import std.experimental.math.rational : Rational;
 /// PI as a fraction, accurate to 20 places
-enum Rational!true PI = Rational!true(8958937768937, 2851718461558);
+enum PI = Rational!(true, ulong, ulong)(8958937768937UL, 2851718461558UL);
 unittest
 {
 	import std.math : approxEqual;
@@ -12,7 +12,6 @@ unittest
 Natural factorial(Natural)(Natural n)
 {
 	Natural ret = 1;
-	bool sub;
 	foreach (i; 1..n+1)
 	{
 		ret *= i;
